@@ -1,0 +1,22 @@
+tex_images_as_pdf:
+  - figs/*.tex|latex
+
+tex_images_as_png:
+  - figs/*.tex|latex|pdf2png
+
+# tex_images_as_svg:
+#   # - figs/*.tex|latex|pdf2svg
+#   - figs/*.pdf|pdf2cairo:
+#       - ext: "svg"
+
+documento:
+  - sir_colormaps.tex|jinja|pandoc:
+      - figs/*.*
+      - tex_images_as_pdf
+      - jinja: {
+          variables: {
+            title: "SIR Colormaps",
+            author: "Darlan Cavalcante Moreira",
+            imageExt: "pdf"}
+          }
+

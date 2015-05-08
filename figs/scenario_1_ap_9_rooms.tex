@@ -1,0 +1,58 @@
+\documentclass{standalone}
+
+\usepackage[utf8]{inputenc} % Use this if the file is encoded with utf-8
+\usepackage{lmodern}  % Very good to use with the fontenc package to generate good PDFs
+\usepackage[T1]{fontenc}  % Important. See http://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
+\usepackage{amsmath,amssymb} % Part of AMS-LaTeX
+% One of the good things of the amsmath package is the math enviroments matrix, pmatrix, bmatrix, Bmatrix, vmatrix and Vmatrix
+\usepackage{siunitx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{shapes}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{matrix}
+\usetikzlibrary{intersections}
+\usetikzlibrary{fit}
+%\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc}
+
+% My custom package with my math definitions
+% Located at /home/darlan/Dropbox/Arquivos de Instalação/Latex_Packages/MathDefinitions.sty
+\usepackage{MathDefinitions}
+
+\begin{document}
+
+
+\tikzset{AP/.style={draw, circle, fill=red, minimum size=8}}
+
+\begin{tikzpicture}[scale=0.4,transform shape]
+  % We explicitly set the bounding box here so that the text nodes outside
+  % the grid do not extend the bounding box.
+  \path[use as bounding box] (-6, -6) rectangle (6, 6);
+
+  \draw[fill=gray] (-6, -6) grid (6, 6);
+
+  \foreach \i in {4.5, 1.5, ..., -5.5}
+  {
+    \foreach \j in {4.5, 1.5, ..., -5.5} 
+    {
+      \draw (\i, \j) node[AP] {};
+    } 
+  }
+
+  \draw[yshift=-2mm] (-6, -6) -- node[below,scale=1.0] {\SI{10}{m}} (-5, -6);
+  \draw[xshift=-2mm] (-6, -6) -- node[left,scale=1.0] {\SI{10}{m}} (-6, -5);
+\end{tikzpicture}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: tikz
+%%% TeX-PDF-mode: t
+%%% TeX-master: t
+%%% End:
+
