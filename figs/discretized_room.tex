@@ -1,0 +1,49 @@
+\documentclass{standalone}
+
+\usepackage[utf8]{inputenc} % Use this if the file is encoded with utf-8
+\usepackage{lmodern}  % Very good to use with the fontenc package to generate good PDFs
+\usepackage[T1]{fontenc}  % Important. See http://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
+\usepackage{amsmath,amssymb} % Part of AMS-LaTeX
+% One of the good things of the amsmath package is the math enviroments matrix, pmatrix, bmatrix, Bmatrix, vmatrix and Vmatrix
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{shapes}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{matrix}
+\usetikzlibrary{intersections}
+\usetikzlibrary{fit}
+%\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.pathreplacing}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
+\usepackage{pgfplotstable}
+
+% My custom package with my math definitions
+% Located at /home/darlan/Dropbox/Arquivos de Instalação/Latex_Packages/MathDefinitions.sty
+\usepackage{MathDefinitions}
+
+\begin{document}
+
+\tikzset{AP/.style={draw, circle, fill=red, minimum size=8}}
+
+\begin{tikzpicture}[scale=0.6]
+  
+
+  \begin{axis}[axis lines=none, width=210mm,height=210mm]
+    \addplot table[col sep=comma,x index=0, y index=1, only marks] {discretized_room.csv};
+    \draw (axis cs: -1.0,-1.0) rectangle (axis cs:1,1);
+    \draw (axis cs: 0,0) node[AP] {};
+  \end{axis}
+  
+\end{tikzpicture}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: tikz
+%%% TeX-PDF-mode: t
+%%% TeX-master: t
+%%% End:
