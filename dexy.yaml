@@ -5,8 +5,10 @@
 #           res: 200
 
 tex_images_as_pdf:
-  - figs/*.tex|latex:
+  - figs/*.tex|jinja|latex:
       - figs/*.csv  # Used in some tikz figures
+      - jinja:
+          variables: {scale: 0.6}
 
       
 # tex_images_as_svg:
