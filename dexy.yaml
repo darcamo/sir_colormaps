@@ -1,9 +1,15 @@
-# tex_images_as_png:
-#   - figs/*.tex|latex|pdf2png:
-#       - figs/*.csv  # Used in some tikz figures
-#       - pdf2png:
-#           res: 200
+pure_pdf_images_as_png:
+  - figs/*.pdf|pdf2png
 
+  
+tex_images_as_png:
+  - figs/*.tex|jinja|latex|pdf2png:
+      - figs/*.csv  # Used in some tikz figures
+      - jinja:
+          variables: {scale: 0.6}
+      - pdf2png:
+          res: 200
+          
 tex_images_as_pdf:
   - figs/*.tex|jinja|latex:
       - figs/*.csv  # Used in some tikz figures
@@ -22,33 +28,31 @@ tex_images_as_pdf:
 #   #     - ext: "svg"
 
 
-# # This will convert every pdf file in the figs folder to svg. Any tex
-# # file will also be processed by latex and the created pdf file will also
-# # be converted to pdf.
-convert_pdfs_figs_to_svg.sh|bash:
-  - figs/*.pdf
-  - tex_images_as_pdf
-  # - figs/*.tex|latex:
-  #     - figs/*.csv  # Used in some tikz figures
-  - contents: "cd figs && for i in *.pdf; do pdftocairo -svg $i; done"
-    # If we set output to 'true' we can see the output of running our
-    # script. Useful to check for latex errors
-  - output: false
-    # We tell dexy that pdf files created by running our script should be
-    # copied to the output directory
-  - bash:
-      add-new-files: svg
+all_pdf_images_as_svg:
+  # # This will convert every pdf file in the figs folder to svg. Any tex
+  # # file will also be processed by latex and the created pdf file will also
+  # # be converted to pdf.
+  - convert_pdfs_figs_to_svg.sh|bash:
+      - figs/*.pdf  # Original pdf images
+      - tex_images_as_pdf  # tikz images converted to pdf first
+      # - figs/*.tex|latex:
+        #     - figs/*.csv  # Used in some tikz figures
+      - contents: "cd figs && for i in *.pdf; do pdftocairo -svg $i; done"
+          # If we set output to 'true' we can see the output of running our
+          # script. Useful to check for latex errors
+      - output: false
+      - bash:
+          add-new-files: svg
 
-      
-documento:
+          
+documento_html:
   - sir_colormaps.md|jinja|pandoc|easyhtml:
-      - figs/*.*
-      - tex_images_as_png
+      # - figs/*.*
+      # - tex_images_as_png
       # - tex_images_as_pdf
+      - all_pdf_images_as_svg
       - jinja: {
           variables: {
-            title: "SIR Colormaps",
-            author: "Darlan Cavalcante Moreira",
             imageExt: "svg"}
           }
       - pandoc:
@@ -57,3 +61,32 @@ documento:
           # The images are contained in a div with class "figure". We set
           # here the size to 10cm
           css: ".figure img{ width:9cm; } .caption{position: relative; left: 100px; color:#4444FF; font-weight:bold;}"
+
+
+documento_pdf:
+  - sir_colormaps.md|jinja|pandoc|p:
+      - figs/*.pdf
+      # - tex_images_as_png
+      - tex_images_as_pdf
+      # - all_pdf_images_as_svg
+      - jinja: {
+          variables: {
+            imageExt: "pdf"}
+          }
+      - pandoc:
+          args: "-s -S"
+
+
+documento_docx:
+  - sir_colormaps.md|jinja|pandoc:
+      # - figs/*.pdf
+      - tex_images_as_png
+      - pure_pdf_images_as_png
+      # - tex_images_as_pdf
+      # - all_pdf_images_as_png
+      - jinja: {
+          variables: {
+            imageExt: "png"}
+          }
+      - pandoc:
+          ext: docx
