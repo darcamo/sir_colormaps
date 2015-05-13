@@ -51,16 +51,18 @@ documento_html:
       # - tex_images_as_png
       # - tex_images_as_pdf
       - all_pdf_images_as_svg
+      - buttondown.css  # We will load it with pandoc
       - jinja: {
           variables: {
             imageExt: "svg"}
           }
       - pandoc:
-          args: "-s -S"
+          args: "-s -S --css buttondown.css"
       - easyhtml:
           # The images are contained in a div with class "figure". We set
-          # here the size to 10cm
-          css: ".figure img{ width:9cm; } .caption{position: relative; left: 100px; color:#4444FF; font-weight:bold;}"
+          # here the size to 9cm. The buttondown.css file could be modified
+          # to include this.
+          css: ".figure img{ width:9cm; }"
 
 
 documento_pdf:
@@ -75,6 +77,7 @@ documento_pdf:
           }
       - pandoc:
           args: "-s -S"
+          ext: pdf
 
 
 documento_docx:
