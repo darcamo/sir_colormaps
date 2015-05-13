@@ -1,0 +1,63 @@
+\documentclass{standalone}
+
+\usepackage[utf8]{inputenc} % Use this if the file is encoded with utf-8
+\usepackage{lmodern}  % Very good to use with the fontenc package to generate good PDFs
+\usepackage[T1]{fontenc}  % Important. See http://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
+\usepackage{amsmath,amssymb} % Part of AMS-LaTeX
+\usepackage{siunitx}
+% One of the good things of the amsmath package is the math enviroments matrix, pmatrix, bmatrix, Bmatrix, vmatrix and Vmatrix
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{shapes}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{matrix}
+\usetikzlibrary{intersections}
+\usetikzlibrary{fit}
+%\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc}
+
+% My custom package with my math definitions
+% Located at /home/darlan/Dropbox/Arquivos de Instalação/Latex_Packages/MathDefinitions.sty
+\usepackage{MathDefinitions}
+
+\begin{document}
+
+
+\tikzset{AP/.style={draw, circle, fill=red, minimum size=10}}
+
+\begin{tikzpicture}[scale=2]
+  % We explicitly set the bounding box here so that the text nodes outside
+  % the grid do not extend the bounding box.
+  % \path[use as bounding box] (-6, -6) rectangle (6, 6);
+
+  \draw[fill=gray] (-1.5, -2.5) grid (2.5, 2.5);
+
+  % Draw the nodes
+  \draw (-.5, 1.5) node[AP] (AP1) {1};
+  \draw (1.5, 1.5) node[AP] (AP2) {2};
+  \draw (0.5, 0.5) node[AP] (AP3) {3};
+  \draw (-.5, -0.5) node[AP] (AP4) {4};
+  \draw (1.5, -0.5) node[AP] (AP5) {5};
+  \draw (0.5, -1.5) node[AP] (AP6) {6};
+
+  % Draw the interesting points
+  \draw[fill=green,xshift=-1pt,yshift=1pt] (1,0) circle (1pt) coordinate (UE_A) node[below left] {A};
+  \draw[fill=green,yshift=1pt] (.5,-0.5) circle (1pt) coordinate (UE_B) node[below left] {B};
+
+  % Draw lines
+  \draw (AP3) -- node[pos=0.6] {\SI{7.07}{m}} (UE_A);
+  \draw (AP3) -- node[pos=0.6] {\SI{10}{m}} (UE_B);
+\end{tikzpicture}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: tikz
+%%% TeX-PDF-mode: t
+%%% TeX-master: t
+%%% End:
+
