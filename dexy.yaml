@@ -52,12 +52,14 @@ documento_html:
       # - tex_images_as_pdf
       - all_pdf_images_as_svg
       - buttondown.css  # We will load it with pandoc
+      - ieee.csl
+      - references.bib
       - jinja: {
           variables: {
             imageExt: "svg"}
           }
       - pandoc:
-          args: "-s -S --css buttondown.css --mathjax"
+          args: "-s -S --css buttondown.css --mathjax --filter pandoc-citeproc"
       - easyhtml:
           # The images are contained in a div with class "figure". We set
           # here the size to 9cm. The buttondown.css file could be modified
@@ -71,12 +73,14 @@ documento_pdf:
       # - tex_images_as_png
       - tex_images_as_pdf
       # - all_pdf_images_as_svg
+      - ieee.csl
+      - references.bib
       - jinja: {
           variables: {
             imageExt: "pdf"}
           }
       - pandoc:
-          args: "-s -S"
+          args: "-s -S --filter pandoc-citeproc"
           ext: pdf
 
 
@@ -87,9 +91,12 @@ documento_docx:
       - pure_pdf_images_as_png
       # - tex_images_as_pdf
       # - all_pdf_images_as_png
+      - ieee.csl
+      - references.bib
       - jinja: {
           variables: {
             imageExt: "png"}
           }
       - pandoc:
+          args: "-s -S --filter pandoc-citeproc"
           ext: docx

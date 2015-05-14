@@ -1,7 +1,8 @@
 ---
 title: SIR Colormaps
 author: Darlan Cavalcante Moreira
-date: May 10, 2014
+bibliography: references.bib
+csl: ieee.csl
 ---
 
 
@@ -27,7 +28,7 @@ sala até 1 AN a cada 9 salas, como mostrado nas 4 figuras abaixo.
 Calcular a SIR analiticamente, pelo menos nas bordas.
 
 
-O modelo de path loss utilizado foi
+O modelo de perda de percurso utilizado foi [@METIS:SimulationGuidelines]
 
 $$PL = A \cdot \log_{10}(d) + B + C \cdot \log_{10}(f_c/5) + X,$$
 
@@ -43,7 +44,7 @@ Os valores de $A$, $B$ e $C$ são diferentes para o caso com linha divisada
    LOS        18.7     46.8     20 
    NLOS       36.8     43.8     20
 
-Table: Parâmetros de Path Loss
+Table: Parâmetros de Perda de Percurso
 
 
 Considere agora a figura abaixo mostrando uma região do cenário com
@@ -206,3 +207,7 @@ chaves que caracterizam cenários como *borda da célula*, *meio de célula* e
 
 - Outra variação que pode ser verificada eh se cabem diferentes layouts de
   disposição dos APs no grid e como isso influencia os resultados.
+
+
+# References #
+
