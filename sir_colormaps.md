@@ -22,29 +22,29 @@ sala até 1 AN a cada 9 salas, como mostrado nas 4 figuras abaixo.
 
 
 
-# Análise teórica simples #
+# Cálculo Analítico da SIR #
 
 Calcular a SIR analiticamente, pelo menos nas bordas.
 
 
 O modelo de path loss utilizado foi
 
-$$PL = A \cdot \log_{10}(d) + B + C \cdot \log_{10}(f_c/5) + X$$
+$$PL = A \cdot \log_{10}(d) + B + C \cdot \log_{10}(f_c/5) + X,$$
 
-O valor de $X$ é dado por $5 (n_w - 1)$, onde $n_w$ corresponde ao número
-de paredes que o sinal atravessa. Os valores de $A$, $B$ e $C$ são
-mostrados na tabela abaixo para os cenários com e sem linha divisada.
+onde $f_c$ é dado em GHz e $d$ em metros. O valor de $X$ é dado por
+$5 (n_w - 1)$, onde $n_w$ corresponde ao número de paredes que o sinal
+atravessa.
+
+Os valores de $A$, $B$ e $C$ são diferentes para o caso com linha divisada
+(LOS) e sem linha divisada (NLOS), como mostrado na tabela abaixo.
 
  Cenário       A        B       C
 ----------  -------  -------  ------
    LOS        18.7     46.8     20 
    NLOS       36.8     43.8     20
 
-Table: Path Loss Parameters
+Table: Parâmetros de Path Loss
 
-
-**TODO**: Calcular para ao menos densidade de 1 AN em cada sala e 1 AN a
-  cada duas salas.
 
 Considere agora a figura abaixo mostrando uma região do cenário com
 densidade de 1 AN a cada duas salas.
@@ -61,22 +61,63 @@ precisa atravessar para chegar no usuário.
 
 Usuário          AN1    AN2      AN3    AN4      AN5    AN6
 --------        -----  ------  ------  ------  ------  ------
-   A                            7.07
-   B                            10.0
+   A            21.21  15.81    7.07   15.81    7.07   15.81
+   B            22.36  22.36    10.0   10.0     10.0    10.0
    A (paredes)   2       2       0       2        2      2
    B (paredes)   3       3       1       1        1      1
    
-Table: Distâncias para 
+Table: Distâncias e número de paredes para cada ponto de acesso
 
 
-Considerando uma portadora com 900 MHz, a perda de percurso do sinal para o
-usuário **A** é dada por
+<!-- ANs = np.array([-.5 + 1j * 1.5, 1.5 + 1j * 1.5, 0.5 + 1j * 0.5, -.5 + 1j * -0.5, 1.5 + 1j * -0.5, 0.5 + 1j * -1.5]) -->
 
-$$PL_A = 18.7 \cdot \log_{10}(7.07) + 46.8 + 20 \cdot \log_{10}(900e6/5)$$
 
-o que resulta em 47.79 dB.
+Considerando uma portadora com 900 MHz, a perda de percurso do sinal
+desejado para o usuário **A** é dada por
 
-A perda de percurso dos 
+$$PL_A[3] = 18.7 \cdot \log_{10}(7.07) + 46.8 + 20 \cdot \log_{10}(0.9/5) = 47.79\text{dB}$$
+
+e do sinal desejado para o usuário **B** é dada por
+
+$$PL_B[3] = 36.8 \cdot \log_{10}(10) + 43.8 + 20 \cdot \log_{10}(0.9/5) + 5(1-1) + 1*5= 70.71 \text{dB}.$$
+
+Note que além da perda por cada parede contabilizada em $X$ também foi
+incluída uma perda extra de 5dB por parede como descrito no cenário. Com
+isso, os valores totais de perda de **A** e **B** para cada ponto de acesso
+são então mostrados (em dB) na tabela abaixo.
+
+Usuário          AN1    AN2      AN3    AN4      AN5    AN6
+--------        -----  ------  ------  ------  ------  ------
+   A            87.72   83.03   47.79   83.03   70.17   83.03
+   B            93.57   93.57   70.71   70.71   70.71   70.71
+
+Table: Valores de perda de percurso em dB
+
+
+Para calcular os valores de SIR, basta convertermos os valores da tabela
+acima para escala linear (lembrando de usar o negativo dos valores visto
+tratar-se de uma perda), o que resulta na tabela abaixo.
+
+Usuário          AN1         AN2       AN3       AN4       AN5      AN6
+--------        --------  --------  --------  --------  --------  --------
+   A            1.69E-09  4.98E-09  1.66E-05  4.98E-09  9.62E-08  4.98E-09
+   B            4.40E-10  4.40E-10  8.50E-08  8.50E-08  8.50E-08  8.50E-08
+
+Table: Valores de perda de percurso em escala linear
+
+
+Depois disso basta dividir o valor referente ao ponto de acesso 3
+(desejado) pela soma dos valores dos demais pontos de acesso
+(interferences), o que resulta nos valores de SIR mostrados abaixo
+
+Usuário    SIR
+--------  ----- 
+   A      21.68
+   B      -4.79
+
+Table: SIR (em dB)
+
+
 
 
 # Medir a SIR em pontos específicos #
