@@ -57,12 +57,12 @@ documento_html:
             imageExt: "svg"}
           }
       - pandoc:
-          args: "-s -S --css buttondown.css"
+          args: "-s -S --css buttondown.css --mathjax"
       - easyhtml:
           # The images are contained in a div with class "figure". We set
           # here the size to 9cm. The buttondown.css file could be modified
           # to include this.
-          css: ".figure img{ width:9cm; }"
+          css: ".figure img{ width:9cm; } .math {color:#00008b;}"
 
 
 documento_pdf:
